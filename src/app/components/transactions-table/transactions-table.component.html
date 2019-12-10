@@ -1,0 +1,51 @@
+<p *ngIf="transactions.length === 0">Este Bloque aun no tiene transacciones</p>
+
+<table class="table table-hover table-striped" *ngIf="transactions.length > 0">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Desde</th>
+      <th scope="col">Hasta</th>
+      <th scope="col">Monto</th>
+      <th scope="col">Fecha y hora</th>
+      <th scope="col">Valido?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let tx of transactions; index as index">
+      <td>{{index}}</td>
+      <td class="text-truncate" style="max-width: 100px;">
+
+        <!--<a [routerLink]="['/wallet', tx.fromAddress]" *ngIf="tx.fromAddress !== null">{{tx.fromAddress}}</a>-->
+
+        {{tx.fromAddress}}
+
+        <span *ngIf="tx.fromAddress === null">System</span>
+        <!--<span class="text-muted" *ngIf="blockchainService.addressIsFromCurrentUser(tx.fromAddress)">
+        <span class="text-muted">
+          <br><small>(That's yours!)</small>
+        </span>-->
+      </td>
+      <td class="text-truncate" style="max-width: 100px;">
+          <!--<a [routerLink]="['/wallet', tx.toAddress]">{{tx.toAddress}}</a>-->
+          {{tx.toAddress}}
+          <!--<span class="text-muted" *ngIf="blockchainService.addressIsFromCurrentUser(tx.toAddress)">
+            <span class="text-muted">
+            <br><small>(That's yours!)</small>
+          </span>-->
+      </td>
+      <td>
+        {{tx.amount}}
+        <span *ngIf="tx.fromAddress === null" class="text-muted"><br><small>(Recompensa de bloque)</small></span>
+      </td>
+      <td>
+        {{tx.timestamp }}<br>
+        <span class="text-muted"><small>{{tx.timestamp | date:'MMM d, y, HH:mm'}}</small></span>
+      </td>
+      <td style="max-width: 40px;">
+        <span *ngIf="tx.isValid()">✓</span>
+        <span *ngIf="!tx.isValid()">✗</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
